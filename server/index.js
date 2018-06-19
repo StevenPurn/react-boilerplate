@@ -10,17 +10,41 @@ const isDev = process.env.NODE_ENV !== 'production';
 const ngrok = (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel ? require('ngrok') : false;
 const resolve = require('path').resolve;
 const app = express();
+const bodyParser = require('body-parser');
+const db = require('../database/mongo');
 
-// If you need a backend, e.g. an API, add your custom backend-specific middleware here
-// app.use('/api', myApi);
+app.use(bodyParser.json());
 
-// In production we need to pass these values in instead of relying on webpack
+app.use('/api/records', (req, res) => {
+  if (req.method === 'POST') {
+    db.addRecord(req.body)
+    .then(() => {
+      res.sendStatus(204);
+      res.end();
+    })
+    .catch((err) => {
+      res.status(400);
+      res.end(err);
+    });
+  } else if (req.method === 'GET') {
+    db.getRecords()
+    .then((data) => {
+      res.status(200);
+      res.send(JSON.stringify(data));
+      res.end();
+    })
+    .catch((err) => {
+      res.sendStatus(400);
+      res.end(err);
+    });
+  }
+});
+
 setup(app, {
   outputPath: resolve(process.cwd(), 'build'),
   publicPath: '/',
 });
 
-// get the intended host and port number, use localhost and port 3000 if not provided
 const customHost = argv.host || process.env.HOST;
 const host = customHost || null; // Let http.Server use its default IPv6/4 host
 const prettyHost = customHost || 'localhost';
