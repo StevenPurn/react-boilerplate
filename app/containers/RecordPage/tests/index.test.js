@@ -1,26 +1,45 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
-import { Helmet } from 'react-helmet';
-import RecordPage from '../index';
+import { RecordPage, mapDispatchToProps } from '../index';
+import { loadRecords } from '../actions';
 
-describe('<FeaturePage />', () => {
-  it('should render its heading', () => {
-    const renderedComponent = shallow(
-      <RecordPage />
+describe('<RecordPage />', () => {
+  it('should fetch records on initial mount', () => {
+    const clickSpy = jest.fn();
+    mount(
+      <RecordPage
+        loading={false}
+        error={{}}
+        records={[]}
+        onButtonClick={clickSpy}
+      />
     );
-    expect(renderedComponent.contains(
-      <Helmet>
-        <title>Records</title>
-        <meta name="description" content="All of the current records in the database" />
-      </Helmet>
-    )).toBe(true);
+    expect(clickSpy).toHaveBeenCalled();
   });
 
-  it('should fetch from the database on page load', () => {
-    const fetchSpy = jest.spyOn(RecordPage.prototype, 'onButtonClick');
-    mount(<RecordPage />);
-    expect(fetchSpy).toHaveBeenCalledTimes(1);
-    fetchSpy.mock();
+  describe('mapDispatchToProps', () => {
+    describe('onButtonClick', () => {
+      it('should be injected', () => {
+        const dispatch = jest.fn();
+        const result = mapDispatchToProps(dispatch);
+        expect(result.onButtonClick).toBeDefined();
+      });
+
+      it('should dispatch loadRecords when called', () => {
+        const dispatch = jest.fn();
+        const result = mapDispatchToProps(dispatch);
+        result.onButtonClick();
+        expect(dispatch).toHaveBeenCalledWith(loadRecords());
+      });
+
+      it('should preventDefault if called with event', () => {
+        const preventDefault = jest.fn();
+        const result = mapDispatchToProps(() => {});
+        const evt = { preventDefault };
+        result.onButtonClick(evt);
+        expect(preventDefault).toHaveBeenCalledWith();
+      });
+    });
   });
 });
