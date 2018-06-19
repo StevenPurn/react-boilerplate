@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import Ul from './Ul';
 import Wrapper from './Wrapper';
 
-function List(props) {
+function List(props) { /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
   const ComponentToRender = props.component;
   let content = (<div></div>);
 
   // If we have items, render them
   if (props.items) {
     content = props.items.map((item) => (
-      <ComponentToRender key={`item-${item._id}`} text={item.text} />
+      <ComponentToRender key={`item-${item._id}`} text={item.text} item={item} />
     ));
   } else {
     // Otherwise render a single component
