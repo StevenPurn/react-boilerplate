@@ -15,8 +15,7 @@ import RecordList from '../../components/RecordList';
 import Button from './Button';
 import saga from './saga';
 
-class RecordPage extends React.Component {
-
+export class RecordPage extends React.Component {
   componentDidMount() {
     this.props.onButtonClick();
   }

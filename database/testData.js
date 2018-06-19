@@ -13,12 +13,10 @@ const sampleRecords = [{
 const seedData = (records) => {
   db.addRecords(records)
     .then(() => {
-      console.log('Successfully inserted records');
       mongoose.disconnect();
     })
     .catch((err) => {
-      // todo: error handling
-      console.log('Error:', err);
+      console.log(err);
       mongoose.disconnect();
     });
 };
