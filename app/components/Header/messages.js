@@ -11,7 +11,7 @@ export default defineMessages({
     defaultMessage: 'Home',
   },
   features: {
-    id: 'boilerplate.components.Header.features',
-    defaultMessage: 'Features',
+    id: 'boilerplate.components.Header.records',
+    defaultMessage: 'Records',
   },
 });
