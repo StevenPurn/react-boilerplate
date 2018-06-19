@@ -11,7 +11,6 @@ import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 
-// import HomePage from 'containers/HomePage/Loadable';
 import RecordInput from 'containers/RecordInput/Loadable';
 import RecordPage from 'containers/RecordPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
