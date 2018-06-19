@@ -10,13 +10,16 @@ const recordSchema = new mongoose.Schema({
 
 const Record = mongoose.model('Record', recordSchema);
 
-const addRecord = (record) => Record.insert(record);
+const addRecord = (record) => {
+  const newRec = new Record(record);
+  return newRec.save();
+};
 
 const addRecords = (records) => Record.insertMany(records);
 
-const getRecords = () => Record.find({});
+const getRecords = () => Record.find();
 
-const getRecord = (id) => Record.find({ id });
+const getRecord = (text) => Record.find({ text });
 
 const clearDb = () => Record.remove({});
 
